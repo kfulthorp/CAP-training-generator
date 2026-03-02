@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPRS California Action Plan Training Generator</title>
+  <style>
+    :root{--bg:#f7fafc;--card:#ffffff;--text:#1a202c;--muted:#4a5568;--accent:#2b6cb0;--line:#e2e8f0}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);}
+    header{padding:1.25rem 1rem;background:#0f172a;color:#fff}
+    header h1{margin:0;font-size:1.25rem}
+    main{max-width:1100px;margin:0 auto;padding:1rem;display:grid;grid-template-columns:1fr;gap:1rem}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem}
+    h2{font-size:1.1rem;margin:0 0 .5rem 0}
+    h3{font-size:1rem;margin:.25rem 0 .5rem 0;color:#334155}
+    fieldset{border:1px solid var(--line);border-radius:10px;padding:1rem;margin:0 0 1rem 0}
+    legend{padding:0 .4rem;color:var(--muted)}
+    label{display:block;font-size:.92rem;margin:.4rem 0 .2rem}
+    input[type="text"], select, textarea{width:100%;padding:.6rem .7rem;border:1px solid var(--line);border-radius:8px;background:#fff}
+    textarea{min-height:70px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+    .small{font-size:.85rem;color:var(--muted)}
+    .btn{display:inline-block;border:1px solid var(--accent);color:#fff;background:var(--accent);padding:.6rem .9rem;border-radius:8px;cursor:pointer}
+    .btn.secondary{background:#fff;color:var(--accent)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .out{white-space:pre-wrap;background:#0b1220;color:#e6edf3;border-radius:10px;padding:1rem;border:1px solid #0a1220;overflow:auto}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;background:#edf2f7;color:#2d3748;border:1px solid var(--line);border-radius:999px;padding:.15rem .55rem;font-size:.8rem;margin-right:.25rem}
+    details summary{cursor:pointer}
+    footer{padding:1rem;text-align:center;color:var(--muted)}
+    .toast{position:fixed;right:1rem;bottom:1rem;background:#0f172a;color:#fff;padding:.6rem .8rem;border-radius:10px;opacity:0;transform:translateY(6px);transition:all .25s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    /* Stacked CAP selections spacing */
+    .cap-stack label { margin-top: .35rem; }
+    .cap-stack select, .cap-stack .small { margin-bottom: .4rem; }
+    @media print{ header, .btn, .secondary, footer { display:none!important } .card{border:none} body{background:#fff} .out{background:#fff;color:#000;border:none} }
+  </style>
+</head>
+<body>
+<header>
+  <h1>CPRS California Action Plan Training Generator</h1>
+  <div class="small">Build a CAP-aligned Staff Training or CPRS Conference Session</div>
+</header>
+<main>
+
+  <section class="card">
+    <h2>How to Use This Generator</h2>
+    <div class="small">
+      Use this generator together with your CPRS CAP Staff Training Development Form. Review and complete the form to identify your CAP Strategy, Competency + Level (Have/Need), Trend, and Goal. Then use this generator to create a draft training or CPRS conference session plan.
+    </div>
+    <ol class="small">
+      <li>Choose ONE Strategy, ONE Competency + Level (Have/Need), ONE Trend, and ONE Goal. You may select “N/A” for any category you don’t want to include.</li>
+      <li>In Step 1, enter those selections and add local context, constraints, materials, and preferences.</li>
+      <li>Change any field — the prompt in Step 2 auto-generates. You can also press the button.</li>
+      <li>Copy the prompt from Step 2 and paste it into ChatGPT (or a similar AI).</li>
+      <li>When ChatGPT returns your completed training plan, copy that text into Word or Google Docs for editing, or use “Download as Word (.doc)” / “Print / Save as PDF.”</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Step 1 — Fill these fields</h2>
+
+    <fieldset>
+      <legend>Session Basics</legend>
+      <label for="type">Type of Session</label>
+      <select id="type">
+        <option>Staff Training</option>
+        <option>Conference Presentation</option>
+      </select>
+      <div class="row">
+        <div>
+          <label for="audience">Audience / Role</label>
+          <select id="audience">
+            <option>Part Time Staff</option>
+            <option>Coordinator</option>
+            <option>Supervisor</option>
+            <option>Manager</option>
+            <option>Director</option>
+          </select>
+        </div>
+        <div>
+          <label for="length">Session Length (minutes)</label>
+          <select id="length">
+            <option>20</option>
+            <option>40</option>
+            <option selected>60</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <h3>CAP Selections</h3>
+    <fieldset class="cap-stack">
+      <legend>CAP Selections</legend>
+
+      <!-- 1) Strategy -->
+      <label for="strategy">1) CAP Strategy</label>
+      <div class="small muted">Which CAP strategy will guide your training approach? (Advocate, Communicate, Evaluate, Innovate, Collaborate)</div>
+      <select id="strategy">
+        <option>N/A</option>
+        <option>Advocate</option>
+        <option>Communicate</option>
+        <option>Evaluate</option>
+        <option>Innovate</option>
+        <option>Collaborate</option>
+      </select>
+
+      <!-- 2) Competency -->
+      <label for="competency">2) CAP Competency</label>
+      <div class="small muted">Which CAP competency will your training develop or refine? (Choose one from the list)</div>
+      <select id="competency">
+        <option>N/A</option>
+        <option>Communications, Marketing & Branding</option>
+        <option>Staff Development</option>
+        <option>Partnership Development</option>
+        <option>Community Leadership</option>
+        <option>Resource Development & Management</option>
+        <option>Research, Planning & Design</option>
+        <option>Cultural Diversity & Inclusion</option>
+        <option>Outcome-Driven Management</option>
+        <option>Human Development</option>
+        <option>Ecosystem & Resource Management</option>
+        <option>Organizational Cohesiveness</option>
+        <option>Political Acumen</option>
+        <option>Client Services</option>
+        <option>Technology</option>
+        <option>Communication</option>
+        <option>Leadership</option>
+        <option>Budget Management</option>
+        <option>Resourcefulness</option>
+        <option>Interpersonal Skills</option>
+        <option>Community & Technical Knowledge</option>
+        <option>Strategic Thinking</option>
+        <option>Innovation</option>
+        <option>Risk Management</option>
+        <option>Mentoring, Training & Teaching</option>
+        <option>Multi-Tasking Flexibility</option>
+        <option>Planning & Assessment</option>
+      </select>
+
+      <!-- 3) Level -->
+      <label for="level">3) Level (Competency Have or Need?)</label>
+      <div class="small muted">Choose <strong>Have</strong> for skill refinement & performance improvement, or <strong>Need</strong> for skill development & practice.</div>
+      <select id="level">
+        <option>N/A</option>
+        <option>Need</option>
+        <option>Have</option>
+      </select>
+
+      <!-- 4) Trend -->
+      <label for="trend">4) CAP Trend</label>
+      <div class="small muted">Which CAP trend will be the focus or context for the training?</div>
+      <select id="trend">
+        <option>N/A</option>
+        <option>Health & Wellness</option>
+        <option>Revenue Generation</option>
+        <option>Cost Recovery</option>
+        <option>Changing Technology</option>
+        <option>Diversity</option>
+        <option>Social Media</option>
+        <option>Social Equity</option>
+        <option>Asset Reinvestment</option>
+        <option>Partnerships</option>
+        <option>Collaboration</option>
+        <option>Water Conservation</option>
+        <option>Aging Populations</option>
+        <option>Sustainability</option>
+      </select>
+
+      <!-- 5) Goal -->
+      <label for="goal">5) CAP Goal</label>
+      <div class="small muted">Which single CAP goal is the target of this training? (Align objectives and assessment to this goal.)</div>
+      <select id="goal">
+        <option>N/A</option>
+        <option>Support Economic Vitality</option>
+        <option>Promote Health and Wellness</option>
+        <option>Create Recreation Experiences</option>
+        <option>Foster Social Cohesiveness</option>
+        <option>Support Human Development</option>
+        <option>Protect Natural Resources</option>
+        <option>Strengthen Community Identity and Sense of Place</option>
+        <option>Facilitate Community Problem Solving</option>
+        <option>Support Community Vibrancy/Livability</option>
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Context & Practicalities</legend>
+      <label for="context">Local Context (2–3 sentences)</label>
+      <textarea id="context" placeholder="City size, community focus, facility/system details..."></textarea>
+      <div class="row">
+        <div>
+          <label for="constraints">Constraints</label>
+          <textarea id="constraints" placeholder="Space, time, equipment, staffing, seasonality..."></textarea>
+        </div>
+        <div>
+          <label for="materials">Available Materials</label>
+          <textarea id="materials" placeholder="Projector, flipcharts, laptops, supplies..."></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="evaluation">Evaluation Preference</label>
+          <select id="evaluation">
+            <option>Quick survey</option>
+            <option>Skills demonstration</option>
+            <option>Reflection</option>
+            <option>Mini-quiz</option>
+          </select>
+        </div>
+        <div>
+          <label for="access">Accessibility & Inclusion Notes</label>
+          <textarea id="access" placeholder="Language, accommodations, DEI priorities..."></textarea>
+        </div>
+      </div>
+    </fieldset>
+
+    <label style="display:block;margin:.5rem 0 0.75rem 0;" class="small">
+      <input type="checkbox" id="includeCapRef" checked> Attach CAP Quick Reference to prompt (recommended)<br>
+      <input type="checkbox" id="reviewPDF"> Ask AI to review the official CAP PDF (requires browsing enabled)
+    </label>
+    <button class="btn" id="generate">Generate Prompt</button>
+  </section>
+
+  <section class="card">
+    <h2>Step 2 — Copy this prompt into ChatGPT</h2>
+    <div id="genStatus" class="small muted">Prompt not generated yet.</div>
+    <div class="small" style="margin:.25rem 0 .75rem;">
+      After generating your prompt below, copy it into ChatGPT. When ChatGPT provides the full training session plan, copy that text into Word or Google Docs for editing, or use the buttons here to download or print it.
+    </div>
+    <div style="margin:.6rem 0;">
+      <span class="pill">Type</span>
+      <span class="pill">Audience</span>
+      <span class="pill">Strategy</span>
+      <span class="pill">Competency + Level</span>
+      <span class="pill">Trend</span>
+      <span class="pill">Goal</span>
+    </div>
+    <div class="out" id="promptOut">(fill the form above — the prompt will generate here)</div>
+    <p><button class="btn secondary" id="copyPrompt">Copy Prompt</button>
+       <button class="btn secondary" id="downloadDoc">Download as Word (.doc)</button>
+       <button class="btn secondary" id="printPDF">Print / Save as PDF</button></p>
+  </section>
+
+  <section class="card">
+    <h2>CAP Quick Reference</h2>
+    <p><button class="btn secondary" id="copyCapRef">Copy CAP Definitions</button></p>
+    <details open>
+      <summary class="small">Show CAP definitions used in the prompt</summary>
+      <div class="small" style="margin-top:.5rem;line-height:1.5;">
+        <strong>Strategies (with descriptions)</strong><br>
+        • <em>Advocate</em> — Influence public policy at the local, state, and federal levels to support parks and recreation.<br>
+        • <em>Communicate</em> — Share the vision and value of parks and recreation with staff, leaders, stakeholders, partners, and the public to raise awareness of services and benefits.<br>
+        • <em>Evaluate</em> — Research, document successes, and track performance to measure outcomes and inform public opinion and policy.<br>
+        • <em>Innovate</em> — Evolve approaches and practices to respond to emerging trends and meet the needs of changing communities.<br>
+        • <em>Collaborate</em> — Engage allied professionals, residents, educators, policymakers, sponsors, and service providers to leverage resources and maximize outcomes.<br><br>
+
+        <strong>Goals (with descriptions)</strong><br>
+        • <em>Promote Health and Wellness</em> — Support physical, emotional, and mental health through fitness, play, and activity.<br>
+        • <em>Support Economic Vitality</em> — Attract business, foster development, increase tourism, provide jobs, and generate revenues for community prosperity.<br>
+        • <em>Create Recreation Experiences</em> — Increase community involvement through engaging programs, special events, and new recreation opportunities.<br>
+        • <em>Foster Social Cohesiveness</em> — Build cohesive communities by celebrating diversity, providing inclusive services, promoting social equity, and ensuring access for all.<br>
+        • <em>Support Human Development</em> — Advance youth development and lifelong learning to foster social, intellectual, physical, and emotional growth for all ages and abilities.<br>
+        • <em>Protect Natural Resources</em> — Conserve habitat and open space, connect people to nature, and steward ecological functions of parklands.<br>
+        • <em>Strengthen Community Identity and Sense of Place</em> — Provide parks, facilities, and services that reflect local character, heritage, culture, history, and landscape.<br>
+        • <em>Facilitate Community Problem Solving</em> — Apply engagement, collaboration, leadership, and facilitation skills to address community issues.<br>
+        • <em>Support Community Vibrancy/Livability</em> — Promote safe, vibrant, attractive, and walkable communities that make life better through parks and recreation.<br><br>
+
+        <strong>Priority Trends (names only)</strong><br>
+        Health & Wellness; Revenue Generation; Cost Recovery; Changing Technology; Diversity; Social Media; Social Equity; Asset Reinvestment; Partnerships; Collaboration; Water Conservation; Aging Populations; Sustainability.<br><br>
+
+        <strong>Competencies (names only)</strong><br>
+        Use Organizational & Professional lists in this form. <em>Have</em> = refinement & performance improvement; <em>Need</em> = skill development & practice.<br><br>
+
+        <em>Reference:</em> California Action Plan (CPRS, 2018/2019 revision) — link is included in the generated prompt.
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>Tips</h2>
+    <ul class="small">
+      <li><strong>Have</strong> = refinement & performance improvement. <strong>Need</strong> = skill development & practice.</li>
+      <li>Keep it focused: pick one Strategy, one Competency level, one Trend, one Goal (or set any to N/A as needed).</li>
+      <li>Use your own examples and data in the “Local Context” box to make results agency-specific.</li>
+    </ul>
+  </section>
+
+</main>
+<footer>
+  CPRS California Action Plan Training Generator — no sign-in required. Works offline.<br><br>
+  Created by <strong>Keith Fulthorp (2025)</strong><br>
+  For more information contact: <a href="mailto:Keith.Fulthorp@csulb.edu">Keith.Fulthorp@csulb.edu</a>
+</footer>
+
+<div id="toast" class="toast">Prompt generated ✅</div>
+
+<script>
+function buildCAPRef(){
+  return [
+"",
+"CAP Quick Reference (use as definitions; do not rewrite)",
+"- Strategies (with descriptions):",
+"  • Advocate — Influence public policy at the local, state, and federal levels to support parks and recreation.",
+"  • Communicate — Share the vision and value of parks and recreation with staff, leaders, stakeholders, partners, and the public to raise awareness of services and benefits.",
+"  • Evaluate — Research, document successes, and track performance to measure outcomes and inform public opinion and policy.",
+"  • Innovate — Evolve approaches and practices to respond to emerging trends and meet the needs of changing communities.",
+"  • Collaborate — Engage allied professionals, residents, educators, policymakers, sponsors, and service providers to leverage resources and maximize outcomes.",
+"",
+"- Goals (with descriptions):",
+"  • Promote Health and Wellness — Support physical, emotional, and mental health through fitness, play, and activity.",
+"  • Support Economic Vitality — Attract business, foster development, increase tourism, provide jobs, and generate revenues for community prosperity.",
+"  • Create Recreation Experiences — Increase community involvement through engaging programs, special events, and new recreation opportunities.",
+"  • Foster Social Cohesiveness — Build cohesive communities by celebrating diversity, providing inclusive services, promoting social equity, and ensuring access for all.",
+"  • Support Human Development — Advance youth development and lifelong learning to foster social, intellectual, physical, and emotional growth for all ages and abilities.",
+"  • Protect Natural Resources — Conserve habitat and open space, connect people to nature, and steward ecological functions of parklands.",
+"  • Strengthen Community Identity and Sense of Place — Provide parks, facilities, and services that reflect local character, heritage, culture, history, and landscape.",
+"  • Facilitate Community Problem Solving — Apply engagement, collaboration, leadership, and facilitation skills to address community issues.",
+"  • Support Community Vibrancy/Livability — Promote safe, vibrant, attractive, and walkable communities that make life better through parks and recreation.",
+"",
+"- Priority Trends (names only):",
+"  Health & Wellness; Revenue Generation; Cost Recovery; Changing Technology; Diversity; Social Media; Social Equity;",
+"  Asset Reinvestment; Partnerships; Collaboration; Water Conservation; Aging Populations; Sustainability.",
+"",
+"- Competencies (names only):",
+"  Use Organizational & Professional lists in this form. Have = skill refinement & performance improvement; Need = skill development & practice.",
+"",
+"Reference: California Action Plan (CPRS, 2018/2019 revision): https://higherlogicdownload.s3.amazonaws.com/CPRS/dcdda633-68e8-4483-b410-c301f88b87e0/UploadedImages/California_Action_Plan_WEB_revised121319.pdf"
+  ].join("\\n");
+}
+
+function buildPrompt(d){
+  const lines = [];
+  lines.push(`You are assisting a parks and recreation professional who is creating a training or presentation aligned with the California Action Plan (CAP).
+
+The goal is to help city recreation staff design either:
+- a Staff Training Plan – an internal workshop for their own team or agency staff, or
+- a Conference Session Presentation – a professional development session for peers at the California Park and Recreation Society (CPRS) conference or district event.
+
+Use the information below to design a practical, ready-to-use session that models the selected CAP Strategy, Competency, Trend, and Goal.
+
+Inputs`);
+  lines.push(`- Type of Session: ${d.type}`);
+  lines.push(`- Audience/Role: ${d.audience}`);
+  lines.push(`- Session Length: ${d.length} minutes`);
+  if(d.strategy && d.strategy !== "N/A") lines.push(`- CAP Strategy: ${d.strategy}`);
+  if(d.competency && d.competency !== "N/A") lines.push(`- CAP Competency + Level (Have/Need): ${d.competency}${(d.level && d.level !== "N/A") ? " — " + d.level : ""}`);
+  if((!d.competency || d.competency === "N/A") && d.level && d.level !== "N/A") lines.push(`- Level: ${d.level}`);
+  if(d.trend && d.trend !== "N/A") lines.push(`- CAP Trend: ${d.trend}`);
+  if(d.goal && d.goal !== "N/A") lines.push(`- CAP Goal: ${d.goal}`);
+  lines.push(`- Local Context: ${d.context || "(to be added)"}`);
+  lines.push(`- Constraints: ${d.constraints || "(to be added)"}`);
+  lines.push(`- Available Materials: ${d.materials || "(to be added)"}`);
+  lines.push(`- Evaluation Preference: ${d.evaluation}`);
+  lines.push(`- Accessibility & Inclusion Notes: ${d.access || "(to be added)"}`);
+
+  lines.push(`
+Deliverables (use these headings in the response):
+1. Session Title & Purpose – a compelling, clear title and 2-sentence summary.
+2. Learning Objectives (3–5 measurable, action-verb objectives tied to the CAP Goal).
+3. Session Outline (Timed Agenda) – minute-by-minute flow for ${d.length} minutes.
+4. Activity Plans – interactive or applied components that model the CAP Strategy.
+5. Discussion or Reflection Questions – to connect to local practice.
+6. Handouts / Slides / Materials – ready-to-print outlines, worksheets, or resource lists.
+7. Facilitator Notes – tips, transitions, and CAP connections.
+8. Evaluation & Follow-Up – simple ways to measure impact and encourage implementation.
+9. CAP Alignment Table – show how the Strategy, Competency (Have/Need), Trend, and Goal are applied in the session.`);
+
+  lines.push(`
+Guidance for the AI:
+- Write at a professional, yet approachable level suitable for CPRS staff and peers—not consultants.
+- Include realistic parks & recreation scenarios, terminology, and community examples.
+- Keep the design doable within real-world time and resource limits.
+- Ensure accessibility, inclusion, and DEI considerations are built in.
+
+Reference: California Action Plan (CPRS, 2018/2019 revision): https://higherlogicdownload.s3.amazonaws.com/CPRS/dcdda633-68e8-4483-b410-c301f88b87e0/UploadedImages/California_Action_Plan_WEB_revised121319.pdf`);
+
+  const includeCap = document.getElementById('includeCapRef')?.checked;
+  const reviewPDF = document.getElementById('reviewPDF')?.checked;
+  let prompt = lines.join("\n");
+  if(includeCap) prompt += "\n\n" + buildCAPRef();
+  if(reviewPDF) prompt += "\n\nIf your tools allow, review the CAP PDF linked above and ensure wording aligns with official CAP definitions.";
+  return prompt;
+}
+
+function byId(id){return document.getElementById(id);}
+function copy(id){
+  const el = byId(id);
+  const r = document.createRange();
+  r.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(r);
+  document.execCommand('copy');
+  sel.removeAllRanges();
+  toast("Copied to clipboard");
+  const s = byId('genStatus'); if (s && id==='promptOut'){ s.textContent = "Prompt copied."; }
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg || "Prompt generated ✅";
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+document.getElementById('copyCapRef').addEventListener('click', function(){
+  const text = buildCAPRef();
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  toast("CAP definitions copied");
+});
+
+function buildWordHTML(){
+  const prompt = document.getElementById('promptOut').textContent || '';
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>CAP Training Plan</title></head><body>
+    <h1>CAP Training Plan</h1>
+    <h2>Generated Prompt</h2>
+    <pre style="white-space:pre-wrap; font-family: Arial, sans-serif;">${prompt.replace(/</g,'&lt;')}</pre>
+  </body></html>`;
+  return html;
+}
+
+document.getElementById('downloadDoc').addEventListener('click', function(){
+  const html = buildWordHTML();
+  const blob = new Blob([html], {type: 'application/msword'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'CAP_Training_Plan.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast("Downloading Word file…");
+});
+
+document.getElementById('printPDF').addEventListener('click', function(){ window.print(); });
+
+document.getElementById('copyPrompt').addEventListener('click', ()=> copy('promptOut'));
+
+document.getElementById('generate').addEventListener('click', ()=>{
+  const d = {
+    type: byId('type').value,
+    audience: byId('audience').value,
+    length: byId('length').value || "60",
+    strategy: byId('strategy').value,
+    competency: byId('competency').value,
+    level: byId('level').value,
+    trend: byId('trend').value,
+    goal: byId('goal').value,
+    context: byId('context').value.trim(),
+    constraints: byId('constraints').value.trim(),
+    materials: byId('materials').value.trim(),
+    evaluation: byId('evaluation').value,
+    access: byId('access').value.trim()
+  };
+  byId('promptOut').textContent = buildPrompt(d);
+  const s = byId('genStatus'); if (s) s.textContent = "Prompt generated " + new Date().toLocaleTimeString();
+  toast();
+});
+
+// Auto-generate when fields change
+function debounce(fn, delay){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), delay); } }
+function generateNow(){ const click = document.getElementById('generate'); if (click) click.click(); }
+const autoGen = debounce(generateNow, 250);
+['type','audience','length','strategy','competency','level','trend','goal','context','constraints','materials','evaluation','access','includeCapRef','reviewPDF']
+  .forEach(id=>{ const el=document.getElementById(id); if(el){ el.addEventListener('change', autoGen); el.addEventListener('input', autoGen); }});
+window.addEventListener('load', ()=> setTimeout(generateNow, 350));
+</script>
+</body>
+</html>
